@@ -10,8 +10,8 @@
  * trzeci argument: liczba konsumentów (opcjonalny, domyślny: 1)
  * zachęcam do ustawiania różnych parametrów, zwłaszcza flagi VERBOSE na 1
  * oraz liczby maksymalnych produktów do produkcji/konsumpcji
- * warunkowe skończenie programu wykrywające wyczerpanych producentów konsumentów nie
- * wykrywa pustego/pełnego potoku
+ * warunkowe skończenie programu wykrywające wyczerpanych producentów lub konsumentów
+ * wykrywa pusty/pełny potok przy zakończeniu się programu
  * Program obsługuje sygnał SIGINT (uwaga - obsługa usuwa pliki z semaforami i z pamięcią)
 */
 #define _GNU_SOURCE
