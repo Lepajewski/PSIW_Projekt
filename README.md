@@ -2,6 +2,7 @@
 
 ### Problem producenta-konsumenta na wielu procesach.
 
+Użytkowanie:
  * kompilacja:  gcc -o projekt projekt.c -lpthread -lrt -Wall
  * uruchomienie: ./projekt
  * lub: ./projekt 10
