@@ -71,10 +71,11 @@ void consumer(sem_t *full, sem_t *empty, int buff_size, pthread_mutex_t buffer_m
         int item = -1;
         read(fd[0], &item, sizeof(item)); //pobranie produktu z potoku
         printf("%70s Consumer %2d: consumes item: %3d consumed items: %3d/%d | PID: %5d\n", " ", id, item, i+1, MAX_PRODUCTS_CONSUMED, getpid());
-        usleep(1000 * (rand() % (MAX_CONSUMING_TIME_MS - MIN_CONSUMING_TIME_MS + 1) + MIN_CONSUMING_TIME_MS));
+
 
         pthread_mutex_unlock(&buffer_mutex); //wyjście z sekcji krytycznej
         sem_post(empty);
+        usleep(1000 * (rand() % (MAX_CONSUMING_TIME_MS - MIN_CONSUMING_TIME_MS + 1) + MIN_CONSUMING_TIME_MS));
     }
     if (VERBOSE) { //konsument wyczerpany
         printf("%70s CONSUMER %2d DEPLETED\n", " ", id);
