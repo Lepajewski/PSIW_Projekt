@@ -106,7 +106,7 @@ void destroySemaphore(sem_t *sem, const char *name) {
 
 void keyboardInterrupt() {
     //w przypadku sygnału SIGINT usuwa pliki z semaforami oraz z pamięcią współdzieloną
-    system("rm /dev/shm/sem.empty_sem /dev/shm/sem.full_sem /dev/shm/var_shm 2> nul");
+    system("rm /dev/shm/sem.empty_sem /dev/shm/sem.full_sem /dev/shm/var_shm 2> /dev/null");
     exit(0);
 }
 
@@ -149,7 +149,7 @@ int main(int argc, char *argv[])
     signal(SIGUSR1, detectProducersDepletion);
     signal(SIGUSR2, detectConsumersDepletion);
 
-    int buff_size = DEFAULT_BUFFER_SIZE; //rozmiar bufora - "magazynu"
+    int buff_size = DEFAULT_BUFFER_SIZE; //rozmiar bufora
     int producers = DEFAULT_PRODUCERS_NUMBER; //liczba producentów
     int consumers = DEFAULT_CONSUMERS_NUMBER; //liczba konsumentów
     int fd[2]; //deskryptory potoku
