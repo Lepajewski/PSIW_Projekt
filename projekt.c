@@ -94,6 +94,9 @@ void producer(int id, Buffer *b) {
         usleep(1000 * (rand() % (MAX_PRODUCING_TIME_MS - MIN_PRODUCING_TIME_MS + 1) + MIN_PRODUCING_TIME_MS)); //czasochłonna produkcja
         printf("Producer %2d: produces item %3d produced items: %3d/%d | PID: %5d\n", id, item, i+1, MAX_PRODUCTS_PRODUCED, getpid());
 
+
+        sem_wait(consumers_sem); //sekcja dostępu do kolejki indeksów zajętych
+
         enqueue(&b->full_queue, a); //aktualizacja kolejki indeksów zajętych - dodanie do niej przyznanego indeksu
         b->items[a] = item;//dodanie przedmiotu na otrzymanym indeksie
 
@@ -103,6 +106,8 @@ void producer(int id, Buffer *b) {
             print_shm(0, b);
             sem_post(memory_sem);
         }
+
+        sem_post(consumers_sem);
 
         sem_post(full_sem); //podniesienie semafora pełnego
     }
@@ -129,6 +134,8 @@ void consumer(int id, Buffer *b) {
         printf("%70s Consumer %2d: consumes item: %3d consumed items: %3d/%d | PID: %5d\n", " ", id, item, i+1, MAX_PRODUCTS_CONSUMED, getpid());
         usleep(1000 * (rand() % (MAX_CONSUMING_TIME_MS - MIN_CONSUMING_TIME_MS + 1) + MIN_CONSUMING_TIME_MS)); //czasochłonna konsumpcja
 
+        sem_wait(producers_sem); //sekcja dostępu do kolejki indeksów wolnych
+
         enqueue(&b->empty_queue, a); //aktualizacja kolejki indeksów wolnych - dodanie do niej przyznanego indeksu
 
         if (VERBOSE) {
@@ -136,6 +143,8 @@ void consumer(int id, Buffer *b) {
             print_shm(1, b);
             sem_post(memory_sem);
         }
+
+        sem_post(producers_sem);
 
         sem_post(empty_sem);
     }
